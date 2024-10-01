@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi primer analizador léxico y sintáctico</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Comic Sans MS', Arial, verdana;
+            background-image: url('https://wallpaperaccess.com/full/6079150.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: red;
+            overflow: auto;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.6);
+            border: 1px solid red;
+            padding: 20px;
+            box-shadow: 0 0 10px black;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
+            margin: 20px;
+            min-height: 400px;
+        }
+
+        .title {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px black;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            text-align: left;
+            color: red;
+            background-color: black;
+            border: 1px solid red;
+            padding: 10px;
+            box-sizing: border-box;
+            resize: both;
+            border-radius: 4px;
+        }
+
+        input[type="submit"], input[type="button"] {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: black;
+            color: red;
+            border: 1px solid red;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 0 5px black;
+        }
+
+        input[type="submit"]:hover, input[type="button"]:hover {
+            background-color: red;
+            color: black;
+        }
+
+        h1, h2 {
+            color: red;
+        }
+
+        h2 {
+            margin-top: 20px;
+            font-family: 'Courier', verdana, sans-serif;
+            text-align: left;
+        }
+
+        .tables-container {
+            margin-top: 20px;
+        }
+
+        .table-wrapper {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid red;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: black;
+        }
+
+        .error {
+            color: red;
+            background-color: #ffe6e6;
+            border: 1px solid red;
+            padding: 10px;
+            margin-top: 10px;
+            text-align: left;
+            border-radius: 4px;
+        }
+    </style>
+
+    <script>
+        function clearTextarea() {
+            document.querySelector('textarea[name="text"]').value = '';
+            const tableBodies = document.querySelectorAll('table tbody');
+            tableBodies.forEach(tableBody => tableBody.innerHTML = '');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            <h1>Mi primer analizador léxico y sintáctico</h1>
+        </div>
+
+        <form method="post">
+            <textarea name="text" rows="10" cols="50">{{ text or "" }}</textarea>
+            <input type="submit" value="Analizar">
+            <input type="button" value="Borrar" onclick="clearTextarea()">
+        </form>
+
+        <!-- Mostrar los errores de sintaxis -->
+        {% if syntax_errors %}
+        <div class="error">
+            <h3>Errores de Sintaxis:</h3>
+            <ul>
+                {% for error in syntax_errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <div class="tables-container">
+            <div class="table-wrapper">
+                <h2>Análisis Léxico</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Línea</th>
+                            <th>Columna</th>
+                            <th>Valor</th>
+                            <th>Tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for token in lex_tokens %}
+                        <tr>
+                            <td>{{ token.line }}</td>
+                            <td>{{ token.column }}</td>
+                            <td>{{ token.value }}</td>
+                            <td>{{ token.type }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+    </div>
+</body>
+</html>
